@@ -21,12 +21,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install JSHint
-        run: npm install jshint --global
-
-      - name: Run Linter
-        run: |
-          # This command finds all JavaScript files recursively and runs JSHint on them
-          find ./ -name "*.js" -exec jshint {} +
-          echo "Linted all the js files successfully"
+      - name: Run ESLint
+        run: npx eslint . .js
           

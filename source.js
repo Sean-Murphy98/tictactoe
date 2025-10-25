@@ -2,11 +2,14 @@
 
 const gameboard = (function (){
     let gameboard = [".",".",".",".",".",".",".",".","."];
+
     function placeShape (position, icon){
         if (position>8 || position<0){
+            //Captures inputs outside range
             alert("Square must be placed inside grid!");
         }
         else if (gameboard[position] == "."){
+            //Only allows placement on empty squares
             gameboard[position] = icon;
         }
         else{
@@ -18,6 +21,7 @@ const gameboard = (function (){
     }
     function printBoard () {
         for (let i=0; i<3; i++){
+            //Provides console display
             console.log(gameboard[0 + 3*i],gameboard[1 + 3*i],gameboard[2 + 3*i]);
         }
     }
@@ -50,6 +54,7 @@ function createUser (name, icon) {
 }
 
 const gameController = (function (){
+
     const board = gameboard();
     let name1 = prompt("Please enter your name, Player 1!");
     const user1 = createUser(name1, "X");
