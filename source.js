@@ -1,5 +1,7 @@
+/*jshint esversion: 6 */
+
 const gameboard = (function (){
-    let gameboard = [".",".",".",".",".",".",".",".","."];
+    const gameboard = [".",".",".",".",".",".",".",".","."];
     function placeShape (position, icon){
         if (position>8 || position<0){
             alert("Square must be placed inside grid!");
