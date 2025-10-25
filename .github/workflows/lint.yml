@@ -1,0 +1,31 @@
+name: Lint Javascript
+
+on: 
+  push: 
+    branches:
+      - main
+    pull_request:
+      branches:
+        -main
+
+jobs: 
+  lint:
+    name: Rune ESLint
+    runs-on: ubuntu-latest
+    steps:
+      -name: Checkout code
+      uses: actions/checkout@v4
+
+      -name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+      -name: Install JSHint
+        run: npm install jshint --global
+
+      -name: Run Linter
+        run: find .tictactoe -name "*.js" -exec jshint {} +
+          echo "Linted all the js files successfully"
+        # This command finds all JavaScript files recursively and runs JSHint on them
+          
