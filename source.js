@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
 const gameboard = (function (){
-    const gameboard = [".",".",".",".",".",".",".",".","."];
+    let gameboard = [".",".",".",".",".",".",".",".","."];
     function placeShape (position, icon){
         if (position>8 || position<0){
             alert("Square must be placed inside grid!");
@@ -18,7 +18,7 @@ const gameboard = (function (){
     }
     function printBoard () {
         for (let i=0; i<3; i++){
-            console.log(gameboard[0 + 3*i],gameboard[1 + 3*i],gameboard[2 + 3*i])
+            console.log(gameboard[0 + 3*i],gameboard[1 + 3*i],gameboard[2 + 3*i]);
         }
     }
     function checkWin () {
@@ -43,10 +43,10 @@ const gameboard = (function (){
         return null;
     }
     return { gameboard, placeShape, resetBoard, printBoard, checkWin };
-})
+});
 
 function createUser (name, icon) {
-    return { name, icon }
+    return { name, icon };  
 }
 
 const gameController = (function (){
@@ -60,10 +60,10 @@ const gameController = (function (){
     let activePlayer = players[0];
     const switchActivePlayer = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
-    }
+    };
     const printNewTurn = () => {
-        console.log(`It is ${activePlayer.name}'s Turn!`)
-        board.printBoard()
+        console.log(`It is ${activePlayer.name}'s Turn!`);
+        board.printBoard();
     }
     const playTurn = (position) => {
         board.placeShape(position, activePlayer.icon);
@@ -75,22 +75,22 @@ const gameController = (function (){
             printNewTurn();
             activePlayer = players[0];
             turnNum = 0;
-            return
+            return;
         }
         else if (turnNum==9){
             console.log("It's a tie!");
             board.resetBoard();
             printNewTurn();
             turnNum = 0;
-            return
+            return;
         }
         switchActivePlayer();
         printNewTurn();
-    }
+    };
     printNewTurn();
     return {
         playTurn, activePlayer
-    }
-})
+    };
+});
 
 const game = gameController();
