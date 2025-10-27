@@ -22,5 +22,5 @@ jobs:
           node-version: '20'
 
       - name: Run ESLint
-        run: npx eslint . .js
+        run: npx eslint ./ .js
           

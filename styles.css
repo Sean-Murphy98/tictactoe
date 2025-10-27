@@ -1,0 +1,75 @@
+*{
+    font-family: 'Roboto', serif;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    height: 100vh;
+    width: 100vw;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+}
+#game-container{
+    height: 75%;
+    width: 70%;
+    position: absolute;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 5%;
+    grid-template: 1fr 0.5fr 4fr / 1fr;
+    grid-template-areas:
+        "title"
+        "scoreboard"
+        "board";    
+}
+#row1, #row2, #row3{
+    flex:1;
+    display: flex;
+    gap: 1 em;
+    width: 70%;
+    gap: 2px;
+    margin-left:15%;
+}
+.boardSquare{
+    width: 30%;
+    flex: 1;
+    border-radius: 6px;
+    gap: 2px;
+    height: 100%;
+    background-color: white;
+}
+.boardSquare:empty:not(.disabled):hover{
+    background-color: #cfcfcf;
+    cursor: pointer;
+}
+#title{
+    grid-area: title;
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#scoreboard{
+    grid-area: scoreboard;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+}
+#player1-score, #player2-score{
+    display: inline-block;
+    width: 45%;
+    text-align: center;
+}
+#board{
+    grid-area: board;
+    display: grid;
+    grid-template: 1fr 1fr 1fr / 1fr;
+    gap: 5px;
+    height: 100%;
+    width: 100%;
+}

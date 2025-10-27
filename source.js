@@ -44,7 +44,7 @@ const gameboard = (function (){
                 return gameboard[0];
             }
         } 
-        return null;
+        return false;
     }
     return { gameboard, placeShape, resetBoard, printBoard, checkWin };
 });
@@ -54,48 +54,95 @@ function createUser (name, icon) {
 }
 
 const gameController = (function (){
-
-    const board = gameboard();
-    let name1 = prompt("Please enter your name, Player 1!");
-    const user1 = createUser(name1, "X");
-    let name2 = prompt("Please enter your name, Player 2!");
-    const user2 = createUser(name2, "O");
+    const board = gameboard();;
     let turnNum = 0;
-    const players = [user1, user2];
-    let activePlayer = players[0];
+    let players = [];
+    let activePlayer = null;
+    const setPlayers = (name1, name2) => {
+        players = [createUser(name1, "X"), createUser(name2, "O")];
+        activePlayer = players[0];
+    };
+    const getActivePlayer = () => activePlayer;
     const switchActivePlayer = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
     const printNewTurn = () => {
         console.log(`It is ${activePlayer.name}'s Turn!`);
-        board.printBoard();
     }
     const playTurn = (position) => {
         board.placeShape(position, activePlayer.icon);
         console.log(`Placing ${activePlayer.name}'s Shape!`);
         turnNum++;
         if(board.checkWin()){
-            console.log(`${activePlayer.name} Wins!`);
-            board.resetBoard();
-            printNewTurn();
-            activePlayer = players[0];
-            turnNum = 0;
-            return;
+            return `${activePlayer.name} Wins!`;
         }
         else if (turnNum==9){
-            console.log("It's a tie!");
-            board.resetBoard();
-            printNewTurn();
-            turnNum = 0;
-            return;
+            return "It's a tie!";
         }
-        switchActivePlayer();
-        printNewTurn();
+        else{
+            switchActivePlayer();
+            printNewTurn();
+            return null;
+        }
     };
-    printNewTurn();
+    const resetGame = () => {
+        board.resetBoard();
+        turnNum = 0;
+        activePlayer = players[0];
+    }
     return {
-        playTurn, activePlayer
+        playTurn, getActivePlayer, setPlayers, resetGame
     };
 });
 
-const game = gameController();
+const displayController = (function (){
+    const game = gameController();
+    let name1 = prompt("Please enter your name, Player 1!", "Player 1");
+    let name2 = prompt("Please enter your name, Player 2!", "Player 2");
+    game.setPlayers(name1, name2);
+    let result = null;
+    let player1Card = document.getElementById('player1-score');
+    let player2Card = document.getElementById('player2-score');
+    player1Card.textContent = `${name1} (X): 0`;
+    player2Card.textContent = `${name2} (O): 0`;
+    let resetButton = document.getElementById('reset-button');
+    resetButton.addEventListener('click', () => {
+        game.resetGame();
+        resetButton.textContent = "Reset Game";
+        result = null;
+        let squares = document.querySelectorAll('.boardSquare');
+        squares.forEach(square => {
+            square.textContent = "";
+            square.classList.remove('disabled');
+        });
+    });
+    let squares = document.querySelectorAll('.boardSquare');
+    squares.forEach(square => {
+        square.addEventListener('click', () => {
+            if(square.textContent === "" && !result){
+                square.textContent = game.getActivePlayer().icon;
+                result = game.playTurn(square.dataset.index);
+                if (result){
+                    alert(result);  
+                    resetButton.textContent = "Start New Game";
+                    if (result === "It's a tie!"){
+                        return;
+                    }
+                    else if (game.getActivePlayer().icon === "X"){
+                        let currentScore = parseInt(player1Card.textContent.split(": ")[1]);
+                        currentScore++;
+                        player1Card.textContent = `${name1} (X): ${currentScore}`;
+                    }
+                    else if (game.getActivePlayer().icon === "O"){
+                        let currentScore = parseInt(player2Card.textContent.split(": ")[1]);
+                        currentScore++;
+                        player2Card.textContent = `${name1} (O): ${currentScore}`;
+                    }
+                    squares.forEach(sq => {
+                        sq.classList.add('disabled');
+                    });
+                }
+            }
+        });
+    });
+})();
